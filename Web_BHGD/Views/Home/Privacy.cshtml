@@ -1,0 +1,148 @@
+﻿@model IEnumerable<Web_BHGD.Models.Product>
+@{
+    ViewData["Title"] = "BHGD Store - Đồ Gia Dụng Chất Lượng";
+}
+
+<div class="main-container">
+    <!-- Hero Section -->
+    <section class="hero-section py-5 bg-primary text-white position-relative" style="width: 100%;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="fw-bold mb-3">Chất Lượng Gia Dụng Việt</h1>
+                    <p class="lead mb-4">Khám phá các sản phẩm gia dụng bền đẹp, giá tốt, phù hợp với mọi gia đình.</p>
+                    <div>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-dark px-4 me-2">
+                            <i class="bi bi-cart-check me-2"></i>Mua Sắm Ngay
+                        </a>
+                        <a href="#main-content" class="btn btn-outline-dark px-4 explore-btn">
+                            <i class="bi bi-compass me-2"></i>Khám phá
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="/images/banner_bhgd.png" alt="Gia dụng Việt" class="img-fluid" style="max-height: 375px;" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section py-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="fw-bold mb-3"><i class="bi bi-grid-1x2 text-primary me-2"></i>Danh Mục Sản Phẩm</h4>
+                    <div class="row">
+                        @foreach (var category in ViewBag.Categories as IEnumerable<Web_BHGD.Models.Category> ?? Enumerable.Empty<Web_BHGD.Models.Category>())
+                        {
+                            var productCount = ViewBag.ProductCounts != null && ViewBag.ProductCounts.ContainsKey(category.Id) ? ViewBag.ProductCounts[category.Id] : 0;
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                                <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id" class="text-decoration-none">
+                                    <div class="category-card bg-white p-3 text-center" style="border: 2px solid #FF6200; border-radius: 8px;">
+                                        <i class="bi bi-box-seam fs-3 text-primary mb-2"></i>
+                                        <h6 class="fw-bold text-dark mb-1">@category.Name</h6>
+                                        <p class="text-muted small mb-0">@productCount sản phẩm</p>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-4" id="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-lg-3 mb-4">
+                    <div class="sticky-top" style="top: 20px;">
+                        <partial name="_CategoryMenu" model="ViewBag.Categories" />
+                    </div>
+                </div>
+                <!-- Content -->
+                <div class="col-lg-9">
+                    <!-- Quick Search -->
+                    <div class="mb-4">
+                        <form asp-action="QuickSearch" method="post" class="d-flex">
+                            <div class="input-group">
+                                <input type="text" name="searchTerm" class="form-control" placeholder="Tìm kiếm sản phẩm..." />
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Tìm</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Featured Products -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold"><i class="bi bi-fire text-primary me-2"></i>Sản Phẩm Nổi Bật</h4>
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+                        </div>
+                        <div class="row">
+                            @foreach (var item in Model.Take(8))
+                            {
+                                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                                    <div class="product-card bg-white shadow-sm rounded">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                                            <div class="position-relative">
+                                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/no-image.jpg" : item.ImageUrl)"
+                                                     class="card-img-top rounded-top" alt="@item.Name" style="height: 180px; object-fit: cover;" />
+                                                @if (item.Price < 500000)
+                                                {
+                                                    <span class="badge bg-primary position-absolute top-0 start-0 m-2">Giá Sốc</span>
+                                                }
+                                            </div>
+                                        </a>
+                                        <div class="p-3">
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="text-dark">
+                                                <h6 class="text-truncate fw-bold">@item.Name</h6>
+                                            </a>
+                                            <div class="mb-2">
+                                                <span class="text-primary fw-bold">@item.Price.ToString("#,##0")₫</span>
+                                                @if (item.Price > 200000)
+                                                {
+                                                    <small class="text-muted text-decoration-line-through ms-2">
+                                                        @((item.Price * 1.2m).ToString("#,##0"))₫
+                                                    </small>
+                                                }
+                                            </div>
+                                            <div class="mb-2">
+                                                @for (int i = 0; i < 5; i++)
+                                                {
+                                                    <i class="bi bi-star-fill text-warning" style="font-size: 12px;"></i>
+                                                }
+                                                <small class="text-muted ms-1">(1k+)</small>
+                                            </div>
+                                            <button type="button" class="btn btn-primary btn-sm w-100 add-to-cart-btn"
+                                                    data-product-id="@item.Id" data-product-name="@item.Name">
+                                                <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    .category-card {
+        transition: all 0.2s ease;
+        overflow: hidden;
+    }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card h6 {
+            font-size: 14px;
+        }
+</style>

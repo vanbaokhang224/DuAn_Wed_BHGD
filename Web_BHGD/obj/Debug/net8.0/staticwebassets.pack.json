@@ -1,0 +1,401 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\admin.css",
+      "PackagePath": "staticwebassets\\css\\admin.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\order.css",
+      "PackagePath": "staticwebassets\\css\\order.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\popup.css",
+      "PackagePath": "staticwebassets\\css\\popup.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\print.css",
+      "PackagePath": "staticwebassets\\css\\print.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\profile.css",
+      "PackagePath": "staticwebassets\\css\\profile.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\css\\userprint.css",
+      "PackagePath": "staticwebassets\\css\\userprint.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\0129bc1d-711d-4883-ac2e-a0b84fad9a5d.jpg",
+      "PackagePath": "staticwebassets\\images\\0129bc1d-711d-4883-ac2e-a0b84fad9a5d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\12ca7c2b-64e9-4349-a833-5f6608f47b01.jpg",
+      "PackagePath": "staticwebassets\\images\\12ca7c2b-64e9-4349-a833-5f6608f47b01.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\17bc4b97-df85-4ee5-b772-d4a94fb8fb72.jpg",
+      "PackagePath": "staticwebassets\\images\\17bc4b97-df85-4ee5-b772-d4a94fb8fb72.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\26cf1208-be6c-4584-8a9a-4eb71b343f4d_638860096426760472.jpg",
+      "PackagePath": "staticwebassets\\images\\26cf1208-be6c-4584-8a9a-4eb71b343f4d_638860096426760472.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\3b5da2fa-cba0-49be-a4b9-0a8459917ed6_638862187996928052.png",
+      "PackagePath": "staticwebassets\\images\\3b5da2fa-cba0-49be-a4b9-0a8459917ed6_638862187996928052.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\3c791ef0-a5c5-439b-be77-419bf6b88ba8.jpg",
+      "PackagePath": "staticwebassets\\images\\3c791ef0-a5c5-439b-be77-419bf6b88ba8.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\3d551914-822e-42ab-8bc1-0ae49abf5877.jpeg",
+      "PackagePath": "staticwebassets\\images\\3d551914-822e-42ab-8bc1-0ae49abf5877.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\59248032-9c09-494b-a204-5921004cc0e0_638860112319071144.png",
+      "PackagePath": "staticwebassets\\images\\59248032-9c09-494b-a204-5921004cc0e0_638860112319071144.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\6ff55c5b-a967-4815-9018-fe71dae8dd37_638860099844052001.jpg",
+      "PackagePath": "staticwebassets\\images\\6ff55c5b-a967-4815-9018-fe71dae8dd37_638860099844052001.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\782429c0-cbff-4ad5-be58-e1deb9e8a740_638860108871882025.jpg",
+      "PackagePath": "staticwebassets\\images\\782429c0-cbff-4ad5-be58-e1deb9e8a740_638860108871882025.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\82e151c9-f111-416e-adab-c000cbce229c.jpg",
+      "PackagePath": "staticwebassets\\images\\82e151c9-f111-416e-adab-c000cbce229c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\8371bd2a-fc8c-475f-9069-a69598b99a3b_638863271426713940.jpg",
+      "PackagePath": "staticwebassets\\images\\8371bd2a-fc8c-475f-9069-a69598b99a3b_638863271426713940.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\90539e42-a813-4876-b395-9a5b29671271.jpg",
+      "PackagePath": "staticwebassets\\images\\90539e42-a813-4876-b395-9a5b29671271.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\b12089d2-a7e2-42b3-b010-66767440c26e_638860097294111459.jpg",
+      "PackagePath": "staticwebassets\\images\\b12089d2-a7e2-42b3-b010-66767440c26e_638860097294111459.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\banner_bhgd.png",
+      "PackagePath": "staticwebassets\\images\\banner_bhgd.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\default_product.png",
+      "PackagePath": "staticwebassets\\images\\default_product.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\e4a011de-a629-4031-ab81-395ba76951d4_638860098331246507.jpg",
+      "PackagePath": "staticwebassets\\images\\e4a011de-a629-4031-ab81-395ba76951d4_638860098331246507.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\f46feff9-fef3-4671-801c-bbaaa252cf61.jpg",
+      "PackagePath": "staticwebassets\\images\\f46feff9-fef3-4671-801c-bbaaa252cf61.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\images (2).jpg",
+      "PackagePath": "staticwebassets\\images\\images (2).jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\loginbanner.png",
+      "PackagePath": "staticwebassets\\images\\loginbanner.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\logomomo.png",
+      "PackagePath": "staticwebassets\\images\\logomomo.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\logoscb_v2.png",
+      "PackagePath": "staticwebassets\\images\\logoscb_v2.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\qrmomo_v2.jpg",
+      "PackagePath": "staticwebassets\\images\\qrmomo_v2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\qrscb.jpg",
+      "PackagePath": "staticwebassets\\images\\qrscb.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\registerbanner.png",
+      "PackagePath": "staticwebassets\\images\\registerbanner.png"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\slider\\banner1.jpg",
+      "PackagePath": "staticwebassets\\images\\slider\\banner1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\images\\slider\\banner3.jpg",
+      "PackagePath": "staticwebassets\\images\\slider\\banner3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\invoices\\Invoice.cs",
+      "PackagePath": "staticwebassets\\invoices\\Invoice.cs"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\invoices\\Invoice.tex",
+      "PackagePath": "staticwebassets\\invoices\\Invoice.tex"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\js\\cart-manager.js",
+      "PackagePath": "staticwebassets\\js\\cart-manager.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\Users\\vankh\\Downloads\\Web_BHGD\\Web_BHGD\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Web_BHGD.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Web_BHGD.props",
+      "PackagePath": "build\\Web_BHGD.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Web_BHGD.props",
+      "PackagePath": "buildMultiTargeting\\Web_BHGD.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Web_BHGD.props",
+      "PackagePath": "buildTransitive\\Web_BHGD.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

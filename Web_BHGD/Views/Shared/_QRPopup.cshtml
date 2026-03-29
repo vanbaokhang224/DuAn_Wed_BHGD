@@ -1,0 +1,53 @@
+﻿<div class="modal fade" id="qrPaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius:14px;">
+
+            <!-- HEADER -->
+            <div class="modal-header justify-content-center"
+                 style="background:#ff6200; color:white;">
+                <span class="fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-qr-code"></i>
+                    Thanh toán bằng mã QR
+                </span>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body text-center">
+
+                <!-- QR CODE -->
+                <img id="qr-code-image" class="qr-image" src="" alt="QR Code">
+
+                <!-- SỐ TIỀN -->
+                <div class="amount-display mt-2">
+                    <span id="amount-display">0₫</span>
+                </div>
+
+                <p class="text-muted mt-2">
+                    Vui lòng quét mã QR bằng ứng dụng ngân hàng để thanh toán.
+                </p>
+
+                <!-- THÔNG TIN -->
+                <div class="bank-info mt-3 p-3 rounded"
+                     style="background:#fff7ef; border:1px solid #ffd7ba;">
+                    <p><strong>Số tài khoản:</strong> <span id="account-number"></span></p>
+                    <p><strong>Tên tài khoản:</strong> <span id="account-name"></span></p>
+                    <p><strong>Ngân hàng:</strong> <span id="bank-name"></span></p>
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer justify-content-between" style="border-top:none;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Hủy
+                </button>
+
+                <button type="button" class="btn complete-payment"
+                        style="background:#ff6200; color:white;">
+                    Xác nhận thanh toán
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

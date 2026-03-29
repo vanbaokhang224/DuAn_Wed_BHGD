@@ -1,0 +1,104 @@
+﻿@page
+@model Web_BHGD.Areas.Identity.Pages.Account.Manage.OrderHistoryModel
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng";
+    ViewData["ActivePage"] = ManageNavPages.OrderHistory;
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-light py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 keep-title">@ViewData["Title"]</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <partial name="_StatusMessage" for="StatusMessage" />
+
+        @if (Model.Orders != null && Model.Orders.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td class="fw-medium">#@order.Id</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="fw-medium text-primary">@order.TotalPrice.ToString("#,##0")₫</td>
+                                <td>
+                                    @switch (order.Status)
+                                    {
+                                        case "Chờ xác nhận":
+                                            <span class="badge bg-warning bg-opacity-15 text-warning w-100 py-2">
+                                                <i class="bi bi-clock me-1"></i>Chờ xác nhận
+                                            </span>
+                                            break;
+                                        case "Đã xác nhận":
+                                            <span class="badge bg-info bg-opacity-15 text-info w-100 py-2">
+                                                <i class="bi bi-check-circle me-1"></i>Đã xác nhận
+                                            </span>
+                                            break;
+                                        case "Đang giao hàng":
+                                            <span class="badge bg-primary bg-opacity-15 text-primary w-100 py-2">
+                                                <i class="bi bi-truck me-1"></i>Đang giao hàng
+                                            </span>
+                                            break;
+                                        case "Đã giao hàng":
+                                            <span class="badge bg-success bg-opacity-15 text-success w-100 py-2">
+                                                <i class="bi bi-check-lg me-1"></i>Đã giao hàng
+                                            </span>
+                                            break;
+                                        case "Huỷ":
+                                            <span class="badge bg-danger bg-opacity-15 text-danger w-100 py-2">
+                                                <i class="bi bi-x-circle me-1"></i>Huỷ
+                                            </span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary bg-opacity-15 text-secondary w-100 py-2">
+                                                @order.Status
+                                            </span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <a asp-page="/Account/Manage/OrderDetails" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye me-1"></i>Xem
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <nav class="mt-4">
+            </nav>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-receipt text-muted"></i>
+                </div>
+                <h5 class="fw-medium mb-3">Chưa có đơn hàng nào cả!</h5>
+                <p class="text-muted mb-4">Hãy mua sắm để thấy đơn hàng xuất hiện nhé!</p>
+                <a href="/" class="btn btn-primary btn-continue-shopping">
+                    <i class="bi bi-cart me-1"></i>Mua sắm ngay
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,419 @@
+﻿@using Web_BHGD.Models
+@{
+    var categories = ViewBag.Categories as List<Category>;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BHGD Store</title>
+
+    <!-- Bootstrap & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/popup.css" asp-append-version="true" />
+</head>
+
+
+<!-- CHAT ICON -->
+<div id="chat-icon" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: #FF6200;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+">
+    <i class="bi bi-chat-dots-fill" style="color:white; font-size:28px;"></i>
+</div>
+
+<!-- AI CHAT BOX -->
+<div id="ai-chat-icon" style="
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: #6a5acd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;">
+    <i class="bi bi-robot" style="color:white; font-size:28px;"></i>
+</div>
+
+    <!-- CHAT WINDOW -->
+<div id="chat-window" style="
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid #ddd;
+">
+    <div style="background:#FF6200; padding:10px; color:white; font-weight:bold;">
+        💬 Hỗ trợ khách hàng
+    </div>
+
+    <div id="chat-messages" style="height:300px; overflow-y:auto; padding:10px; background:#f7f7f7;">
+    </div>
+
+    <div style="padding:10px; background:white;">
+        <input id="chat-input" type="text" placeholder="Nhập tin nhắn..."
+               style="width:75%; border:1px solid #ccc; padding:5px; border-radius:6px;" />
+
+        <button id="send-btn" style="
+            width:22%;
+            background:#FF6200;
+            border:none;
+            padding:6px;
+            color:white;
+            border-radius:6px;
+        ">Gửi</button>
+    </div>
+</div>
+
+<body>
+<div class="main-wrapper">
+
+        <!-- CHAT AI WINDOW -->
+        <div id="ai-chat-window" style="
+    position: fixed;
+    bottom: 160px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid #ddd;">
+
+            <div style="background:#6a5acd; padding:10px; color:white; font-weight:bold;">
+                🤖 Chat AI
+            </div>
+
+            <div id="ai-chat-messages" style="height:300px; overflow-y:auto; padding:10px; background:#f0f0f0;">
+            </div>
+
+            <div style="padding:10px; background:white;">
+                <input id="ai-chat-input" type="text" placeholder="Nhập tin nhắn cho AI..."
+                       style="width:75%; border:1px solid #ccc; padding:5px; border-radius:6px;" />
+
+                <button id="ai-send-btn" style="
+            width:22%;
+            background:#6a5acd;
+            border:none;
+            padding:6px;
+            color:white;
+            border-radius:6px;">
+                    Gửi
+                </button>
+            </div>
+        </div>
+
+    <!-- HEADER -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BHGD Store</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <!-- Menu trái -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door me-1"></i>Trang chủ
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Product" asp-action="Index">
+                                <i class="bi bi-grid me-1"></i>Sản phẩm
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-list me-1"></i>Danh mục
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index">
+                                    <i class="bi bi-grid me-2"></i>Tất cả sản phẩm</a>
+                                </li>
+
+                                @if (categories != null)
+                                {
+                                    foreach (var c in categories)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Product"
+                                               asp-action="Index"
+                                               asp-route-categoryId="@c.Id">
+                                                <i class="bi bi-tag me-2"></i>@c.Name
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                                    <i class="bi bi-shield-lock me-1"></i>ADMIN
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Ô tìm kiếm -->
+                    <form class="d-flex search-box" method="get" asp-controller="Product" asp-action="Index">
+                        @Html.AntiForgeryToken()
+                        <div class="input-group">
+                            <input type="text" name="searchString" class="form-control" placeholder="Tìm kiếm sản phẩm..." />
+                            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+
+                    <!-- Login + Giỏ hàng -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><partial name="_LoginPartial" /></li>
+
+                        <li class="nav-item">
+                            <a class="nav-link position-relative" asp-controller="ShoppingCart" asp-action="Index">
+                                <i class="bi bi-cart3"></i>
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <script>
+        // Bật / Tắt chatbox
+        document.getElementById("chat-icon").onclick = function () {
+            let box = document.getElementById("chat-window");
+            box.style.display = box.style.display === "none" ? "block" : "none";
+        };
+    </script>
+
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <div class="content-wrapper container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-light text-center text-lg-start text-muted py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Cột 1 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase fw-bold">BHGD Store</h5>
+                    <p>Chuyên cung cấp đồ gia dụng chất lượng cao.</p>
+                    <div>
+                        <i class="bi bi-facebook me-2 fs-5"></i>
+                        <i class="bi bi-instagram me-2 fs-5"></i>
+                        <i class="bi bi-youtube me-2 fs-5"></i>
+                        <i class="bi bi-tiktok fs-5"></i>
+                    </div>
+                </div>
+
+                <!-- Cột 2 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase fw-bold">Liên kết</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-dark text-decoration-none"><i class="bi bi-arrow-right me-2"></i>Trang chủ</a></li>
+                        <li><a href="/Product" class="text-dark text-decoration-none"><i class="bi bi-arrow-right me-2"></i>Sản phẩm</a></li>
+                        <li><a href="/Home/Contact" class="text-dark text-decoration-none"><i class="bi bi-arrow-right me-2"></i>Liên hệ</a></li>
+                        <li><a href="/Home/About" class="text-dark text-decoration-none"><i class="bi bi-arrow-right me-2"></i>Giới thiệu</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase fw-bold">Hỗ trợ</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-question-circle me-2"></i>Chính sách đổi trả</li>
+                        <li><i class="bi bi-shield-check me-2"></i>Chính sách bảo hành</li>
+                        <li><i class="bi bi-info-circle me-2"></i>Hướng dẫn mua hàng</li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase fw-bold">Liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt me-2"></i>123 ABC, TP.HCM</li>
+                        <li><i class="bi bi-telephone me-2"></i>1900-1000</li>
+                        <li><i class="bi bi-envelope me-2"></i>info@bhgdstore.com</li>
+                        <li><i class="bi bi-clock me-2"></i>8:00 - 22:00</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr />
+            <div class="text-center">
+                <p>© 2025 BHGD Store. All rights reserved.</p>
+            </div>
+        </div>
+
+    <!-- Toast -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        //--- Tạo hoặc lấy ID khách hàng ---
+        let chatId = localStorage.getItem("chatId");
+        if (!chatId) {
+            chatId = "guest-" + Date.now();
+            localStorage.setItem("chatId", chatId);
+        }
+
+        //--- Nhận tin nhắn ---
+        connection.on("addNewMessage", (user, message, isAdmin) => {
+            const box = document.getElementById("chat-messages");
+
+            const bubble = document.createElement("div");
+            bubble.style.padding = "8px";
+            bubble.style.margin = "6px 0";
+            bubble.style.borderRadius = "10px";
+            bubble.style.maxWidth = "70%";
+
+                    if (isAdmin) {
+                        bubble.style.background = "#d1e7ff";
+                        bubble.innerText = user + ": " + message;   
+                    } else {
+                bubble.style.background = "#ffe5d1";
+                bubble.style.marginLeft = "auto";
+                bubble.innerText = "Bạn: " + message;
+            }
+
+            box.appendChild(bubble);
+            box.scrollTop = box.scrollHeight;
+        });
+
+        //--- Gửi tin nhắn ---
+        document.getElementById("send-btn").onclick = function () {
+            const msg = document.getElementById("chat-input").value.trim();
+            if (!msg) return;
+
+            connection.invoke("Send", chatId, "Khách hàng", msg, false)
+                .catch(err => console.error(err));
+
+            document.getElementById("chat-input").value = "";
+        };
+
+        //--- Bắt đầu SignalR ---
+        connection.start()
+            .then(() => console.log("Connected to Hub!"))
+            .catch(err => console.error("SignalR error:", err));
+    </script>
+<!-- Scripts chung -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/cart-manager.js" asp-append-version="true"></script>
+
+
+
+            <!-- AI Chat Script -->
+            <script>
+                // ======== Bật tắt Chat AI ========
+                document.getElementById("ai-chat-icon").onclick = function () {
+                    let box = document.getElementById("ai-chat-window");
+                    box.style.display = (box.style.display === "none" || box.style.display === "") ? "block" : "none";
+                };
+
+                // ======== Gửi tin nhắn tới AI API ========
+                document.getElementById("ai-send-btn").onclick = async function () {
+                    const input = document.getElementById("ai-chat-input");
+                    const message = input.value.trim();
+                    if (!message) return;
+
+                    // Hiển thị bong bóng người dùng
+                    AddAiMessage("Bạn", message, false);
+
+                    input.value = "";
+
+                    // Gửi đến server
+                    const response = await fetch("/AI/Ask", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ question: message })
+                    });
+
+                    const aiReply = await response.text();
+
+                    // Hiển thị AI trả lời
+                    AddAiMessage("AI", aiReply, true);
+                };
+
+                // ======== Hàm hiển thị bong bóng tin nhắn ========
+                function AddAiMessage(sender, message, isAI) {
+                    const box = document.getElementById("ai-chat-messages");
+
+                    const bubble = document.createElement("div");
+                    bubble.style.padding = "8px";
+                    bubble.style.margin = "6px 0";
+                    bubble.style.borderRadius = "10px";
+                    bubble.style.maxWidth = "70%";
+
+                    if (isAI) {
+                        bubble.style.background = "#dcd6ff";
+                        bubble.innerText = sender + ": " + message;
+                    } else {
+                        bubble.style.background = "#ffe5cd";
+                        bubble.style.marginLeft = "auto";
+                        bubble.innerText = "Bạn: " + message;
+                    }
+
+                    box.appendChild(bubble);
+                    box.scrollTop = box.scrollHeight;
+                }
+            </script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

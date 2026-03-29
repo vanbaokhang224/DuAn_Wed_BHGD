@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Web_BHGD.Areas.Admin.Models.ChatSummary>
+
+@{
+    ViewData["Title"] = "Hỗ trợ khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">
+        <i class="fas fa-headset me-2 text-primary"></i> Hỗ trợ khách hàng
+    </h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-primary">
+                    <tr>
+                        <th style="width: 35%;">Khách hàng</th>
+                        <th style="width: 40%;">Tin nhắn cuối</th>
+                        <th style="width: 20%;">Thời gian</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
+                                         style="width:45px; height:45px; font-size:18px;">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <strong>@item.UserId</strong>
+                                </div>
+                            </td>
+
+                            <td class="text-muted">
+                                @item.LastMessage
+                            </td>
+
+                            <td>
+                                @item.LastTime.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td class="text-end">
+                                <a href="/Admin/Support/Chat?userId=@item.UserId"
+                                   class="btn btn-sm btn-primary px-3">
+                                    <i class="fas fa-comments me-1"></i> Xem
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #f5f9ff !important;
+        cursor: pointer;
+    }
+</style>

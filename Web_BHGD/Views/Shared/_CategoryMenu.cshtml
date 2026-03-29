@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Web_BHGD.Models.Category>
+<div class="category-menu bg-white shadow-sm rounded" style="position: sticky; top: 70px; z-index: 900; margin-top: 0;">
+    <h5 class="category-header px-3 py-2 fw-bold text-uppercase text-primary mb-0">Danh mục sản phẩm</h5>
+    <ul class="list-unstyled mb-0">
+        <li>
+            <a asp-action="Index" asp-controller="Product" class="category-link d-block px-3 py-2 text-dark">
+                Tất cả sản phẩm
+            </a>
+        </li>
+        @foreach (var category in Model)
+        {
+            <li>
+                <a asp-action="Index" asp-controller="Product" asp-route-categoryId="@category.Id" class="category-link d-block px-3 py-2 text-dark">
+                    @category.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>

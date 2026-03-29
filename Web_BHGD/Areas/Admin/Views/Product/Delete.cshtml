@@ -1,0 +1,155 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">Xác nhận xóa sản phẩm</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="card-body">
+        @if (!ViewBag.CanDelete)
+        {
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i> @ViewBag.DeleteWarning</h5>
+                <p class="mb-0 mt-2">Bạn không thể xóa sản phẩm này khi còn đơn hàng chưa hoàn thành</p>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-circle me-2"></i> Bạn chắc chắn muốn xóa sản phẩm này?</h5>
+                <p class="mb-0 mt-2">Thao tác này không thể hoàn tác và sẽ xóa vĩnh viễn dữ liệu sản phẩm</p>
+            </div>
+
+            @if (Model.Stock > 0)
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-box me-2"></i> @ViewBag.StockWarning
+                </div>
+            }
+
+            @if (Model.SoldQuantity > 0)
+            {
+                <div class="alert alert-success">
+                    <i class="fas fa-chart-line me-2"></i> @ViewBag.SalesInfo
+                </div>
+            }
+        }
+
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <img src="@Model.ImageUrl" alt="@Model.Name"
+                     class="img-fluid rounded border"
+                     style="max-height:120px;"
+                     onerror="this.src='/images/default_product.png';">
+            </div>
+            <div class="col-md-10">
+                <dl class="row">
+                    <dt class="col-sm-3">Tên sản phẩm:</dt>
+                    <dd class="col-sm-9"><strong>@Model.Name</strong></dd>
+
+                    <dt class="col-sm-3">Danh mục:</dt>
+                    <dd class="col-sm-9">@(Model.Category?.Name ?? "Chưa phân loại")</dd>
+
+                    <dt class="col-sm-3">Giá bán:</dt>
+                    <dd class="col-sm-9"><strong>@Model.Price.ToString("N0")đ</strong></dd>
+
+                    <dt class="col-sm-3">Tồn kho:</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge @GetStockStatusClass(Model.Stock)">
+                            @Model.Stock
+                        </span>
+                    </dd>
+
+                    <dt class="col-sm-3">Đã bán:</dt>
+                    <dd class="col-sm-9">@Model.SoldQuantity đơn vị</dd>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <dt class="col-sm-3">Mô tả:</dt>
+                        <dd class="col-sm-9">@Model.Description</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end gap-2">
+        @if (ViewBag.CanDelete)
+        {
+            <form asp-action="DeleteConfirmed" method="post" id="deleteForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <button type="button" class="btn btn-danger btn-lg" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                </button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-times"></i> Hủy bỏ
+                </a>
+            </form>
+        }
+        else
+        {
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách
+            </a>
+        }
+    </div>
+</div>
+
+@functions {
+    string GetStockStatusClass(int stock)
+    {
+        return stock switch
+        {
+            0 => "badge-danger",
+            <= 5 => "badge-warning",
+            <= 10 => "badge-info",
+            <= 50 => "badge-success",
+            _ => "badge-primary"
+        };
+    }
+}
+
+<script>
+    function confirmDelete() {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm "@Model.Name"?\n\nThao tác này không thể hoàn tác!')) {
+            // Disable button để tránh double-click
+            document.querySelector('button[onclick="confirmDelete()"]').disabled = true;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>
+
+<style>
+    .stock-out, .badge-danger {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+
+    .stock-critical, .badge-warning {
+        background-color: #ffc107 !important;
+        color: black !important;
+    }
+
+    .stock-low, .badge-info {
+        background-color: #17a2b8 !important;
+        color: white !important;
+    }
+
+    .stock-normal, .badge-success {
+        background-color: #28a745 !important;
+        color: white !important;
+    }
+
+    .stock-high, .badge-primary {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+</style>

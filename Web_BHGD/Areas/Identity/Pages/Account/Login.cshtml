@@ -1,0 +1,91 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div class="auth-container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row w-100 mx-0">
+        <div class="col-lg-8 col-md-10 col-12 mx-auto">
+            <div class="auth-card-modern row g-0 overflow-hidden">
+                <!-- Left side - Branding -->
+                <div class="col-md-6 auth-branding d-flex align-items-center justify-content-center">
+                    <div class="text-center text-white p-4">
+                        <h2 class="brand-title mb-3">Chào mừng trở lại!</h2>
+                        <p class="brand-subtitle mb-4">Đăng nhập vào tài khoản của bạn để tiếp tục mua sắm và trải nghiệm những dịch vụ tuyệt vời nhất.</p>
+                        <div class="brand-features">
+                            <div class="feature-item mb-2">
+                                <i class="bi bi-shield-check me-2"></i>
+                                Bảo mật thông tin tuyệt đối
+                            </div>
+                            <div class="feature-item mb-2">
+                                <i class="bi bi-lightning me-2"></i>
+                                Trải nghiệm mua sắm nhanh chóng
+                            </div>
+                            <div class="feature-item">
+                                <i class="bi bi-heart me-2"></i>
+                                Ưu đãi độc quyền cho thành viên
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side - Login form -->
+                <div class="col-md-6 auth-form-section">
+                    <div class="p-5">
+                        <h3 class="auth-title-modern keep-title mb-1">Đăng nhập</h3>
+                        <p class="auth-subtitle mb-4">Nhập thông tin để truy cập tài khoản</p>
+
+                        <form id="account" class="auth-form-modern" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4" role="alert" style="display: none;"></div>
+
+                            <div class="form-group-modern mb-3">
+                                <label class="form-label-modern">Email</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-envelope input-icon"></i>
+                                    <input asp-for="Input.Email" class="form-control-modern" autocomplete="username" aria-required="true" placeholder="Nhập địa chỉ email" />
+                                </div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group-modern mb-3">
+                                <label class="form-label-modern">Mật khẩu</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-lock input-icon"></i>
+                                    <input asp-for="Input.Password" type="password" class="form-control-modern" autocomplete="current-password" aria-required="true" placeholder="Nhập mật khẩu" />
+                                </div>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-check-modern mb-4">
+                                <div class="form-check-label-modern">
+                                    <input class="form-check-input-modern" asp-for="Input.RememberMe" type="checkbox" />
+                                    Ghi nhớ đăng nhập
+                                </div>
+                                <a id="forgot-password" asp-page="./ForgotPassword" class="forgot-link">Quên mật khẩu?</a>
+                            </div>
+
+                            <button id="login-submit" type="submit" class="btn-modern btn-primary-modern w-100 mb-4">
+                                Đăng nhập
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+
+                            <div class="auth-divider mb-4">
+                                <span>hoặc</span>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="signup-text">Chưa có tài khoản? </span>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="signup-link">Đăng ký ngay</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

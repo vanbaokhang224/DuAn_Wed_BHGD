@@ -1,0 +1,35 @@
+﻿@model Web_BHGD.Models.Category
+
+@{
+    ViewData["Title"] = "Chi tiết Danh mục #" + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Header -->
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">@ViewData["Title"]</h2>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h5 class="card-title">Thông tin danh mục</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Mã danh mục:</strong> @Model.Id</p>
+                                <p class="mb-1"><strong>Tên danh mục:</strong> @Model.Name</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

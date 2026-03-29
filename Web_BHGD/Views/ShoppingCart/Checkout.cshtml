@@ -1,0 +1,234 @@
+﻿@model Web_BHGD.Models.Order
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Thanh toán";
+
+    var cartItems = ViewBag.CartItems as List<Web_BHGD.Models.CartItem> ?? new List<Web_BHGD.Models.CartItem>();
+    var totalAmount = ViewBag.TotalAmount != null ? (decimal)ViewBag.TotalAmount : 0;
+
+    var currentUser = await UserManager.GetUserAsync(User);
+    var fullName = currentUser?.FullName ?? "";
+    var address = currentUser?.Address ?? "";
+    var phoneNumber = currentUser?.PhoneNumber ?? "";
+}
+
+@if (!cartItems.Any())
+{
+    <div class="alert alert-warning mt-4">
+        Giỏ hàng trống — không thể thanh toán.
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Quay lại mua hàng</a>
+    return;
+}
+
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">Thanh toán</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        <div class="row g-4">
+
+            <!-- FORM THÔNG TIN -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <form asp-action="Checkout" method="post" id="checkout-form">
+                            <input type="hidden" id="isQrPaymentComplete" name="isQrPaymentComplete" value="false" />
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="CustomerName" class="form-label fw-medium"></label>
+                                <input asp-for="CustomerName" class="form-control border-primary" value="@fullName" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CustomerPhone" class="form-label fw-medium"></label>
+                                <input asp-for="CustomerPhone" class="form-control border-primary" value="@phoneNumber" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CustomerEmail" class="form-label fw-medium"></label>
+                                <input asp-for="CustomerEmail" class="form-control border-primary" value="@User.Identity?.Name" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ShippingAddress" class="form-label fw-medium"></label>
+                                <input asp-for="ShippingAddress" class="form-control border-primary" value="@address" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="PaymentMethod" class="form-label fw-medium"></label>
+                                <select asp-for="PaymentMethod" class="form-select border-primary" id="PaymentMethod">
+                                    <option value="COD" selected>COD (Khi nhận hàng)</option>
+                                    <option value="Bank">Ngân hàng</option>
+                                    <option value="MoMo">MoMo</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="Notes" class="form-label fw-medium"></label>
+                                <textarea asp-for="Notes" class="form-control border-primary" rows="4"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                Đặt hàng
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- DANH SÁCH GIỎ -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <h4 class="mb-4">Chi tiết giỏ hàng</h4>
+
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cartItems)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.Price.ToString("#,##0")₫</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@((item.Price * item.Quantity).ToString("#,##0"))₫</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
+                                    <td class="fw-bold text-primary">@totalAmount.ToString("#,##0")₫</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- QR POPUP -->
+<div>
+    @await Html.PartialAsync("_QRPopup")
+</div>
+
+<style>
+    /* GIẢI QUYẾT LỖI KHÔNG CLICK ĐƯỢC */
+    .modal-backdrop {
+        z-index: 1045 !important; /* Modal = 1050 → backdrop thấp hơn */
+    }
+
+    #qrPaymentModal {
+        z-index: 1055 !important;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+
+            const totalAmount = @totalAmount;
+
+            // KHỞI TẠO MODAL – KHÔNG DÙNG BACKDROP
+            const qrModal = new bootstrap.Modal(document.getElementById('qrPaymentModal'), {
+                backdrop: false,    // ❌ KHÔNG tạo lớp nền mờ -> không khóa trang
+                keyboard: true
+            });
+
+            const paymentData = {
+                MoMo: {
+                    qrCode: '/images/qrmomo_v2.jpg',
+                    logo: '/images/logomomo.png',
+                    accountNumber: '0914595761',
+                    accountName: 'VĂN BẢO KHANG',
+                    bankName: 'Ví MoMo'
+                },
+                Bank: {
+                    qrCode: '/images/qrscb.jpg',
+                    logo: '/images/logoscb_v2.png',
+                    accountNumber: '070132837072',
+                    accountName: 'VĂN BẢO KHANG',
+                    bankName: 'Sacombank'
+                }
+            };
+
+            function updateQR(method) {
+                const data = paymentData[method];
+
+                $("#qr-code-image").attr("src", data.qrCode);
+                $("#payment-logo").attr("src", data.logo);
+                $("#account-number").text(data.accountNumber);
+                $("#account-name").text(data.accountName);
+                $("#bank-name").text(data.bankName);
+                $("#header-logo").attr("src", data.headerLogo || data.logo);
+
+                $("#amount-display").text(totalAmount.toLocaleString("vi-VN") + "₫");
+            }
+
+            // CHẶN SUBMIT ĐỂ HIỆN POPUP
+            $("#checkout-form").on("submit", function (e) {
+                const method = $("#PaymentMethod").val();
+
+                if (method === "MoMo" || method === "Bank") {
+                    e.preventDefault();
+                    updateQR(method);
+                    qrModal.show();
+
+                    // GỠ class modal-open để body không bị khóa scroll
+                    $('body').removeClass('modal-open').css('padding-right', '');
+                }
+            });
+
+            // NÚT XÁC NHẬN THANH TOÁN
+                $(".complete-payment").on("click", function () {
+
+                    $.post("/ShoppingCart/ConfirmPayment", function (response) {
+
+                        if (response.success) {
+                            $("#isQrPaymentComplete").val("true");
+                            qrModal.hide();
+
+                            setTimeout(() => {
+                                $("#checkout-form").off("submit").submit();
+                            }, 300);
+                        }
+                        else {
+                            alert("Không thể xác nhận thanh toán. Vui lòng thử lại!");
+                        }
+                    });
+
+                });
+
+            // NÚT HỦY / NÚT X ĐÓNG
+            $("#qrPaymentModal .btn-secondary, #qrPaymentModal .btn-close").on("click", function () {
+                qrModal.hide();
+            });
+
+        });
+    </script>
+}

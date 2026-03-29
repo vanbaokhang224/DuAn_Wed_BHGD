@@ -1,0 +1,54 @@
+﻿@using Web_BHGD.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var activePage = ViewData["ActivePage"] as string;
+    var hasExternalLogins = SignInManager.GetExternalAuthenticationSchemesAsync().Result.Any();
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h6 class="mb-0"><i class="bi bi-person-gear me-2"></i>Quản lý tài khoản</h6>
+    </div>
+    <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action d-flex align-items-center @(ManageNavPages.IndexNavClass(ViewContext) == "active" ? "active" : "")"
+               id="profile" asp-page="./Index">
+                <i class="bi bi-person-circle me-3 text-primary"></i>
+                <div>
+                    <div class="fw-semibold">Thông tin của bạn</div>
+                    <small class="text-muted">Cập nhật hồ sơ</small>
+                </div>
+            </a>
+
+            <a class="list-group-item list-group-item-action d-flex align-items-center @(ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? "active" : "")"
+               id="change-password" asp-page="./ChangePassword">
+                <i class="bi bi-key me-3 text-warning"></i>
+                <div>
+                    <div class="fw-semibold">Mật khẩu</div>
+                    <small class="text-muted">Đổi mật khẩu</small>
+                </div>
+            </a>
+
+            @if (hasExternalLogins)
+            {
+                <a class="list-group-item list-group-item-action d-flex align-items-center @(ManageNavPages.ExternalLoginsNavClass(ViewContext) == "active" ? "active" : "")"
+                   id="external-login" asp-page="./ExternalLogins">
+                    <i class="bi bi-share me-3 text-info"></i>
+                    <div>
+                        <div class="fw-semibold">Liên kết tài khoản</div>
+                        <small class="text-muted">Quản lý tài khoản mạng xã hội</small>
+                    </div>
+                </a>
+            }
+
+            <a class="list-group-item list-group-item-action d-flex align-items-center @(ManageNavPages.OrderHistoryNavClass(ViewContext) == "active" ? "active" : "")"
+               id="order-history" asp-page="/Account/Manage/OrderHistory">
+                <i class="bi bi-cart-check me-3 text-success"></i>
+                <div>
+                    <div class="fw-semibold">Đơn hàng của bạn</div>
+                    <small class="text-muted">Xem lịch sử mua sắm</small>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

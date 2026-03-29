@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Web_BHGD.Models.ChatMessage>
+@{
+    ViewData["Title"] = "Hỗ trợ khách hàng";
+    string userId = ViewBag.UserId;
+}
+
+<style>
+    .chat-container {
+        width: 70%;
+        margin: auto;
+        margin-top: 30px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        background: #f8f8f8;
+    }
+    .chat-header {
+        padding: 15px;
+        background: #FF6200;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px 10px 0 0;
+    }
+    .chat-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    .bubble-admin {
+        background: #d1e7ff;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
+        margin-bottom: 8px;
+    }
+    .bubble-user {
+        background: #ffe5d1;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
+        margin-left: auto;
+        text-align: right;
+        margin-bottom: 8px;
+    }
+    .chat-footer {
+        padding: 10px;
+        display: flex;
+        gap: 10px;
+        background: white;
+        border-top: 1px solid #ddd;
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        💬 Chat với khách: @userId
+    </div>
+
+    <div id="chat-box" class="chat-body">
+        @foreach (var m in Model)
+        {
+            if (m.IsAdmin)
+            {
+                <div class="bubble-admin">@m.Message</div>
+            }
+            else
+            {
+                <div class="bubble-user">@m.Message</div>
+            }
+        }
+    </div>
+
+    <div class="chat-footer">
+        <input id="admin-msg" class="form-control" placeholder="Nhập tin nhắn..."/>
+        <button id="btn-send" class="btn btn-primary">Gửi</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .build();
+
+    connection.on("addNewMessage", (user, message, isAdmin) => {
+
+        if (user !== "@userId") return; // chỉ nhận tin từ đúng khách
+
+        const box = document.getElementById("chat-box");
+
+        const bubble = document.createElement("div");
+        bubble.className = isAdmin ? "bubble-admin" : "bubble-user";
+        bubble.innerText = message;
+
+        box.appendChild(bubble);
+        box.scrollTop = box.scrollHeight;
+    });
+
+    document.getElementById("btn-send").onclick = function () {
+        const msg = document.getElementById("admin-msg").value.trim();
+        if (!msg) return;
+
+        connection.invoke("Send", "@userId", "@userId", msg, true);
+        document.getElementById("admin-msg").value = "";
+    };
+
+    connection.start();
+</script>

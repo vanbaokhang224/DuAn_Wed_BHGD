@@ -1,0 +1,22 @@
+﻿<h2>Chat với khách hàng</h2>
+
+<div id="adminMessages" style="height:400px; overflow:auto;"></div>
+
+<input id="adminMessage" type="text" placeholder="Nhập tin nhắn..." />
+<button id="adminSend">Gửi</button>
+
+<script>
+    const chat = $.connection.chatHub;
+
+    chat.client.addNewMessageToPage = function (user, message) {
+        $("#adminMessages").append(`<div><b>${user}:</b> ${message}</div>`);
+    };
+
+    $.connection.hub.start().done(function () {
+        $("#adminSend").click(function () {
+            const text = $("#adminMessage").val();
+            chat.server.send("Nhân viên", text);
+            $("#adminMessage").val("");
+        });
+    });
+</script>

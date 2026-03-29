@@ -1,0 +1,217 @@
+﻿@model IEnumerable<Product>
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Quản lý Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var categories = ViewBag.Categories as SelectList;
+}
+
+<!-- Stats Section -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(67, 97, 238, 0.1); color: var(--primary);">
+            <i class="fas fa-boxes"></i>
+        </div>
+        <div class="stat-value">@ViewBag.TotalProducts</div>
+        <div class="stat-label">Tổng sản phẩm</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(255, 193, 7, 0.1); color: #d39e00;">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="stat-value">@ViewBag.LowStockCount</div>
+        <div class="stat-label">Sắp hết hàng</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(220, 53, 69, 0.1); color: var(--danger);">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-value">@ViewBag.OutOfStockCount</div>
+        <div class="stat-label">Hết hàng</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(72, 149, 239, 0.1); color: var(--info);">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-value">@ViewBag.TotalSold</div>
+        <div class="stat-label">Đã bán</div>
+    </div>
+</div>
+
+<!-- Products Table -->
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">Danh sách sản phẩm</h2>
+        <div class="d-flex gap-2 align-items-center">
+            <a asp-action="Add" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tạo sản phẩm
+            </a>
+            <div class="search-box">
+                <div style="position: relative;">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" style="padding-left: 40px; width: 300px;" id="searchInput">
+                    <i class="fas fa-search" style="
+                        position: absolute;
+                        left: 15px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: var(--gray);
+                    "></i>
+                </div>
+            </div>
+            <select class="form-select" id="categoryFilter" style="width: 200px;">
+                <option value="">Tất cả danh mục</option>
+                @foreach (var category in categories)
+                {
+                    <option value="@category.Value">@category.Text</option>
+                }
+            </select>
+            <select class="form-select" id="sortOption" style="width: 200px;">
+                <option value="">Sắp xếp theo</option>
+                <option value="name-asc">Tên (A-Z)</option>
+                <option value="name-desc">Tên (Z-A)</option>
+                <option value="price-asc">Giá (Thấp đến Cao)</option>
+                <option value="price-desc">Giá (Cao đến Thấp)</option>
+                <option value="stock-asc">Tồn kho (Thấp đến Cao)</option>
+                <option value="stock-desc">Tồn kho (Cao đến Thấp)</option>
+            </select>
+            <button class="btn btn-primary" onclick="window.location.reload()">
+                <i class="fas fa-sync-alt"></i> Tải lại
+            </button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Đã bán</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                @foreach (var product in Model)
+                {
+                    <tr data-category="@product.CategoryId" data-name="@product.Name" data-price="@product.Price" data-stock="@product.Stock">
+                        <td>@product.Id</td>
+                        <td>
+                            <img src="@product.ImageUrl" alt="@product.Name" class="product-img">
+                        </td>
+                        <td>@product.Name</td>
+                        <td>@product.Category?.Name</td>
+                        <td>@product.Price.ToString("N0")đ</td>
+                        <td>
+                            <span class="stock-badge @GetStockStatusClass(product.Stock)">
+                                @product.Stock
+                            </span>
+                        </td>
+                        <td>@product.SoldQuantity</td>
+                        <td>
+                            <span class="stock-badge @GetStockStatusClass(product.Stock)">
+                                @GetStockStatus(product.Stock)
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Display" asp-route-id="@product.Id" class="btn-icon btn-view">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a asp-action="Update" asp-route-id="@product.Id" class="btn-icon btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@product.Id" class="btn-icon btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Filter and sort functionality
+        function updateTable() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortOption = document.getElementById('sortOption').value;
+
+            // Get all rows
+            let rows = Array.from(document.querySelectorAll('#productTableBody tr'));
+
+            // Filter by search and category
+            rows = rows.filter(row => {
+                const name = row.getAttribute('data-name').toLowerCase();
+                const category = row.getAttribute('data-category');
+                const matchesSearch = name.includes(searchText);
+                const matchesCategory = !categoryFilter || category === categoryFilter;
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort rows
+            rows.sort((a, b) => {
+                if (sortOption === 'name-asc') {
+                    return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+                } else if (sortOption === 'name-desc') {
+                    return b.getAttribute('data-name').localeCompare(a.getAttribute('data-name'));
+                } else if (sortOption === 'price-asc') {
+                    return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+                } else if (sortOption === 'price-desc') {
+                    return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+                } else if (sortOption === 'stock-asc') {
+                    return parseInt(a.getAttribute('data-stock')) - parseInt(b.getAttribute('data-stock'));
+                } else if (sortOption === 'stock-desc') {
+                    return parseInt(b.getAttribute('data-stock')) - parseInt(b.getAttribute('data-stock'));
+                }
+                return 0;
+            });
+
+            // Update table
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        document.getElementById('searchInput').addEventListener('input', updateTable);
+        document.getElementById('categoryFilter').addEventListener('change', updateTable);
+        document.getElementById('sortOption').addEventListener('change', updateTable);
+    </script>
+}
+
+@functions {
+    string GetStockStatus(int stock)
+    {
+        return stock switch
+        {
+            0 => "Hết hàng",
+            <= 5 => "Sắp hết",
+            <= 10 => "Thấp",
+            <= 50 => "Bình thường",
+            _ => "Cao"
+        };
+    }
+
+    string GetStockStatusClass(int stock)
+    {
+        return stock switch
+        {
+            0 => "stock-out",
+            <= 5 => "stock-critical",
+            <= 10 => "stock-low",
+            <= 50 => "stock-normal",
+            _ => "stock-high"
+        };
+    }
+}

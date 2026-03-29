@@ -1,0 +1,193 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<div class="auth-container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row w-100 mx-0">
+        <div class="col-lg-10 col-md-11 col-12 mx-auto">
+            <div class="auth-card-modern row g-0 overflow-hidden">
+                <!-- Left side - Branding -->
+                <div class="col-md-5 auth-branding d-flex align-items-center justify-content-center">
+                    <div class="text-center text-white p-4">
+                        <h2 class="brand-title mb-3">Tham gia cùng chúng tôi</h2>
+                        <p class="brand-subtitle mb-4">Tạo tài khoản để trở thành thành viên và tận hưởng những ưu đãi độc quyền dành riêng cho bạn.</p>
+                        <div class="brand-features">
+                            <div class="feature-item mb-2">
+                                <i class="bi bi-gift me-2"></i>
+                                Ưu đãi đặc biệt cho thành viên mới
+                            </div>
+                            <div class="feature-item mb-2">
+                                <i class="bi bi-truck me-2"></i>
+                                Miễn phí vận chuyển đơn hàng đầu tiên
+                            </div>
+                            <div class="feature-item mb-2">
+                                <i class="bi bi-star me-2"></i>
+                                Tích điểm và nhận quà tặng hấp dẫn
+                            </div>
+                            <div class="feature-item">
+                                <i class="bi bi-headset me-2"></i>
+                                Hỗ trợ khách hàng 24/7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side - Register form -->
+                <div class="col-md-7 auth-form-section">
+                    <div class="p-5">
+                        <h3 class="auth-title-modern keep-title mb-1">Tạo tài khoản</h3>
+                        <p class="auth-subtitle mb-4">Điền thông tin để tạo tài khoản mới</p>
+
+                        <form id="registerForm" class="auth-form-modern" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4" role="alert" style="display: none;"></div>
+
+                            <div class="form-group-modern mb-3">
+                                <label class="form-label-modern">Họ và tên</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-person input-icon"></i>
+                                    <input asp-for="Input.FullName" class="form-control-modern" autocomplete="name" aria-required="true" placeholder="Nhập họ và tên đầy đủ" />
+                                </div>
+                                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group-modern mb-3">
+                                <label class="form-label-modern">Email</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-envelope input-icon"></i>
+                                    <input asp-for="Input.Email" class="form-control-modern" autocomplete="username" aria-required="true" placeholder="Nhập địa chỉ email" />
+                                </div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group-modern mb-3">
+                                <label class="form-label-modern">Ngày sinh</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-calendar input-icon"></i>
+                                    <input asp-for="Input.DateOfBirth" type="text" class="form-control-modern flatpickr" aria-required="true" id="dob" placeholder="Chọn ngày sinh" />
+                                    <input asp-for="Input.Age" type="hidden" id="age" />
+                                </div>
+                                <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group-modern mb-3">
+                                        <label class="form-label-modern">Mật khẩu</label>
+                                        <div class="input-wrapper">
+                                            <i class="bi bi-lock input-icon"></i>
+                                            <input asp-for="Input.Password" type="password" class="form-control-modern" autocomplete="new-password" aria-required="true" placeholder="Tạo mật khẩu" />
+                                        </div>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group-modern mb-3">
+                                        <label class="form-label-modern">Xác nhận mật khẩu</label>
+                                        <div class="input-wrapper">
+                                            <i class="bi bi-shield-check input-icon"></i>
+                                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control-modern" autocomplete="new-password" aria-required="true" placeholder="Nhập lại mật khẩu" />
+                                        </div>
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="registerSubmit" type="submit" class="btn-modern btn-primary-modern w-100 mb-4">
+                                Tạo tài khoản
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+
+                            <div class="auth-divider mb-4">
+                                <span>hoặc</span>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="signup-text">Đã có tài khoản? </span>
+                                <a asp-page="./Login" class="signup-link">Đăng nhập ngay</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
+    <script>
+        flatpickr("#dob", {
+            dateFormat: "d/m/Y",
+            maxDate: new Date(),
+            locale: "vn",
+            defaultDate: new Date(2000, 0, 1),
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const dob = selectedDates[0];
+                    const today = new Date();
+                    let age = today.getFullYear() - dob.getFullYear();
+                    const m = today.getMonth() - dob.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+                    document.getElementById('age').value = age;
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const passwordInput = document.querySelector('input[name="Input.Password"]');
+            const confirmInput = document.querySelector('input[name="Input.ConfirmPassword"]');
+            const submitBtn = document.getElementById("registerSubmit");
+
+            let errorDiv = document.getElementById("password-error");
+            if (!errorDiv) {
+                errorDiv = document.createElement("div");
+                errorDiv.id = "password-error";
+                errorDiv.style.color = "red";
+                errorDiv.style.fontSize = "13px";
+                errorDiv.style.marginTop = "5px";
+                confirmInput.closest(".form-group-modern").appendChild(errorDiv);
+            }
+
+          function validatePassword() {
+    const pw = passwordInput.value;
+    const cpw = confirmInput.value;
+    errorDiv.textContent = "";
+
+    if (pw.length < 6) {
+        errorDiv.textContent = "Mật khẩu phải có ít nhất 6 ký tự";
+    }
+    else if (!/[a-zA-Z]/.test(pw)) {
+        errorDiv.textContent = "Mật khẩu phải chứa ít nhất 1 chữ cái";
+    }
+    else if (!/\d/.test(pw)) {
+        errorDiv.textContent = "Mật khẩu phải chứa ít nhất 1 chữ số";
+    }
+    else if (pw !== cpw && cpw !== "") {
+        errorDiv.textContent = "Mật khẩu xác nhận không khớp";
+    }
+    if (errorDiv.textContent !== "") {
+        passwordInput.style.borderColor = "red";
+        confirmInput.style.borderColor = "red";
+        submitBtn.disabled = true;
+    } else {
+        passwordInput.style.borderColor = "";
+        confirmInput.style.borderColor = "";
+        submitBtn.disabled = false;
+    }
+}
+            passwordInput.addEventListener("input", validatePassword);
+            confirmInput.addEventListener("input", validatePassword);
+
+            passwordInput.addEventListener("focus", () => {
+                errorDiv.textContent = "";
+                passwordInput.style.borderColor = "";
+                confirmInput.style.borderColor = "";
+            });
+        });
+    </script>
+}

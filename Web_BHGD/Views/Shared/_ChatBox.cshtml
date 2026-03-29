@@ -1,0 +1,145 @@
+﻿@{
+    string userId = "";
+
+    // 1. Nếu đã đăng nhập → dùng ID thật
+    if (User.Identity.IsAuthenticated)
+    {
+        userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    }
+    else
+    {
+        // 2. Nếu chưa đăng nhập → dùng GuestId trong cookie
+        if (Context.Request.Cookies["GuestId"] == null)
+        {
+            string guestId = "guest-" + Guid.NewGuid();
+            Context.Response.Cookies.Append("GuestId", guestId, new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddYears(1)   // giữ 1 năm → không mất lịch sử
+                    });
+        }
+
+        userId = Context.Request.Cookies["GuestId"];
+    }
+}
+<input type="hidden" id="userId" value="@userId" />
+
+<!-- Hidden field để script biết userId -->
+<input type="hidden" id="userId" value="@userId" />
+
+<div id="chatbox" class="chatbox">
+    <div class="chat-header">💬 Hỗ trợ khách hàng</div>
+
+    <div id="chatMessages" class="chat-messages"></div>
+
+    <div class="chat-input">
+        <input id="message" placeholder="Nhập tin nhắn..." />
+        <button id="sendBtn">Gửi</button>
+    </div>
+</div>
+
+<button id="chatToggle" class="chat-toggle">💬</button>
+
+<style>
+    .chatbox {
+        width: 300px;
+        height: 400px;
+        background: white;
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,.2);
+        display: none;
+        z-index: 999999;
+    }
+    .chatbox.show { display: block; }
+
+    .chat-messages {
+        height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .user-msg {
+        background: #ffe5cc;
+        padding: 8px;
+        margin: 4px 0;
+        border-radius: 8px;
+        text-align: right;
+    }
+
+    .admin-msg {
+        background: #e0e0ff;
+        padding: 8px;
+        margin: 4px 0;
+        border-radius: 8px;
+        text-align: left;
+    }
+
+    .chat-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff6600;
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        font-size: 20px;
+        z-index: 999999;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    let userId = document.getElementById("userId").value;
+
+    // ⬇ 1) LOAD LỊCH SỬ TIN NHẮN
+    function loadMessages() {
+        $.get("/Support/GetMessages", { userId: userId }, function (messages) {
+
+            $("#chatMessages").html("");
+
+            messages.forEach(m => {
+                $("#chatMessages").append(`
+                    <div class="${m.isAdmin ? 'admin-msg' : 'user-msg'}">
+                        ${m.message}
+                    </div>
+                `);
+            });
+
+            $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+        });
+    }
+
+    loadMessages(); // Load khi mở trang
+
+
+    // ⬇ 2) GỬI TIN NHẮN
+    $("#sendBtn").click(function () {
+
+        let msg = $("#message").val().trim();
+        if (msg === "") return;
+
+        $.post("/Support/SendMessage",
+            { userId: userId, message: msg },
+            function () {
+                $("#message").val("");
+
+                loadMessages();
+            });
+    });
+
+    // Enter để gửi
+    $("#message").keypress(function (e) {
+        if (e.which === 13) $("#sendBtn").click();
+    });
+
+
+    // ⬇ 3) MỞ / ĐÓNG CHATBOX
+    $("#chatToggle").click(function () {
+        $("#chatbox").toggleClass("show");
+    });
+</script>

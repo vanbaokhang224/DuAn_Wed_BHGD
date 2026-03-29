@@ -1,0 +1,296 @@
+﻿@model IEnumerable<Web_BHGD.Models.Product>
+@{
+    ViewData["Title"] = "BHGD Store - Đồ Gia Dụng Chất Lượng";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white position-relative">
+    <div class="container-fluid p-0">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6 py-4">
+                    <h1 class="fw-bold mb-3">Chất Lượng Gia Dụng Việt</h1>
+                    <p class="lead mb-4">Khám phá các sản phẩm gia dụng bền đẹp, giá tốt, phù hợp với mọi gia đình.</p>
+                    <div class="d-flex gap-2">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-dark px-4">
+                            <i class="bi bi-cart-check me-2"></i>Mua Sắm Ngay
+                        </a>
+                        <a href="#main-content" class="btn btn-outline-dark px-4">
+                            <i class="bi bi-compass me-2"></i>Khám phá
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center py-4">
+                    <img src="/images/banner_bhgd.png" alt="Gia dụng Việt" class="img-fluid" style="max-height: 450px; object-fit: contain;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="mainBanner"
+     class="carousel slide carousel-fade home-slider"
+     data-bs-ride="carousel"
+     data-bs-interval="3500">
+
+    <div class="carousel-inner">
+
+        <div class="carousel-item active">
+            <img src="/images/slider/banner1.jpg" class="home-banner-img d-block w-100" alt="banner 1" />
+        </div>
+
+        <div class="carousel-item">
+            <img src="/images/slider/banner3.jpg" class="home-banner-img d-block w-100" alt="banner 3" />
+        </div>
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainBanner" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+
+    <button class="carousel-control-next" type="button" data-bs-target="#mainBanner" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+
+</div>
+
+    <style>
+        .home-slider {
+            width: 100%;
+            height: 380px; /* Chiều cao banner */
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .slider-bg {
+            width: 100%;
+            height: 380px;
+            background-size: cover; /* Ảnh phủ nhưng không bị méo */
+            background-position: center; /* Canh giữa */
+            background-repeat: no-repeat; /* Không lặp ảnh */
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1); /* Đổi màu mũi tên thành trắng cho dễ nhìn */
+        }
+    </style>
+</div>
+<!-- Categories Section -->
+<section class="categories-section py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="fw-bold mb-3"><i class="bi bi-grid-1x2 text-primary me-2"></i>Danh Mục Sản Phẩm</h4>
+                <div class="row">
+                    @foreach (var category in ViewBag.Categories as IEnumerable<Web_BHGD.Models.Category> ?? Enumerable.Empty<Web_BHGD.Models.Category>())
+                    {
+                        var productCount = ViewBag.ProductCounts != null && ViewBag.ProductCounts.ContainsKey(category.Id) ? ViewBag.ProductCounts[category.Id] : 0;
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id" class="text-decoration-none">
+                                <div class="category-card bg-white p-3 text-center" style="border: 2px solid #FF6200; border-radius: 8px;">
+                                    <i class="bi bi-box-seam fs-3 text-primary mb-2"></i>
+                                    <h6 class="fw-bold text-dark mb-1">@category.Name</h6>
+                                    <p class="text-muted small mb-0">@productCount sản phẩm</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-4" id="main-content">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top" style="top: 20px;">
+                    <partial name="_CategoryMenu" model="ViewBag.Categories" />
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="col-lg-9">
+                <!-- Featured Products -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold"><i class="bi bi-fire text-primary me-2"></i>Sản Phẩm Nổi Bật</h4>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+                    </div>
+                    <div class="row">
+                        @foreach (var item in Model.Take(8))
+                        {
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="product-card bg-white shadow-sm rounded position-relative h-100 d-flex flex-column">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="position-relative">
+                                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/default_product.png" : item.ImageUrl)"
+                                                 class="card-img-top rounded-top" alt="@item.Name"
+                                                 style="height: 220px; object-fit: contain; background: #f8f9fa; padding: 10px;" />
+                                            @if (item.Price < 500000)
+                                            {
+                                                <span class="badge bg-primary position-absolute top-0 start-0 m-2">Giá Sốc</span>
+                                            }
+                                            @if (item.Stock == 0)
+                                            {
+                                                <div class="out-of-stock-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                                     style="background: rgba(0,0,0,0.7); border-radius: 8px 8px 0 0;">
+                                                    <span class="badge bg-danger fs-6 px-3 py-2">Hết hàng</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </a>
+                                    <div class="p-3 d-flex flex-column flex-grow-1">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="text-dark text-decoration-none">
+                                            <h6 class="fw-bold mb-2 product-title">@item.Name</h6>
+                                        </a>
+                                        <div class="mb-2">
+                                            <span class="text-primary fw-bold fs-6">@item.Price.ToString("#,##0")₫</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning" style="font-size: 12px;"></i>
+                                            }
+                                            <small class="text-muted ms-1">(1k+)</small>
+                                        </div>
+                                        <!-- Stock and Sold Info -->
+                                        <div class="mb-3">
+                                            <div class="row text-center">
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Đã bán</small>
+                                                    <span class="fw-bold text-success">@item.SoldQuantity</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block">Tồn kho</small>
+                                                    <span class="fw-bold @(item.Stock > 0 ? "text-primary" : "text-danger")">@item.Stock</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Action Buttons -->
+                                        @if (item.Stock > 0)
+                                        {
+                                            <div class="d-grid gap-2 mt-auto">
+                                                <button type="button" class="btn btn-primary btn-sm add-to-cart-btn"
+                                                        data-product-id="@item.Id" data-product-name="@item.Name">
+                                                    <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm buy-now-btn"
+                                                        data-product-id="@item.Id" data-product-name="@item.Name">
+                                                    <i class="bi bi-lightning me-1"></i>Mua ngay
+                                                </button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-secondary btn-sm w-100 mt-auto" disabled>
+                                                <i class="bi bi-x-circle me-1"></i>Hết hàng
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .category-card {
+        transition: all 0.2s ease;
+        overflow: hidden;
+    }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card h6 {
+            font-size: 14px;
+        }
+
+    .hero-section {
+        margin-top: -80px; /* Pulls the hero section up to touch the navbar */
+        padding-top: 80px; /* Adds padding to account for the navbar height */
+    }
+
+    .product-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+        min-height: 450px; /* Đảm bảo chiều cao tối thiểu */
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .out-of-stock-overlay {
+        z-index: 10;
+    }
+
+    .product-card img {
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .product-title {
+        line-height: 1.4;
+        min-height: 3.5em;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Ensure sidebar is always visible
+            $('.sticky-top').show();
+
+            // Smooth scroll for "Khám phá" button
+            $('a[href="#main-content"]').click(function (e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $('#main-content').offset().top - 80
+                }, 500);
+            });
+
+                // Buy now functionality for index page
+                    $('.buy-now-btn').click(function () {
+                        var btn = $(this);
+                        var productId = btn.data('product-id');
+                        var productName = btn.data('product-name');
+
+                        btn.prop('disabled', true).html('<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Đang xử lý...');
+
+                        $.ajax({
+                            url: '@Url.Action("AddToCart", "ShoppingCart")',
+                            type: 'POST',
+                            data: {
+                                productId: productId,
+                                quantity: 1,
+                                __RequestVerificationToken: CartManager.getAntiForgeryToken()
+                            },
+                            success: function () {
+                                window.location.href = '@Url.Action("Checkout", "ShoppingCart")';
+                            },
+                            error: function () {
+                                CartManager.showToast('error', 'Lỗi khi xử lý. Vui lòng thử lại.');
+                                btn.prop('disabled', false).html('<i class="bi bi-lightning me-1"></i>Mua ngay');
+                            }
+                        });
+                    });
+                });
+    </script>
+}

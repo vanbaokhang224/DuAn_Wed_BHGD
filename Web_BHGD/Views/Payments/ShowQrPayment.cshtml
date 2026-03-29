@@ -1,0 +1,25 @@
+﻿@model Web_BHGD.Models.Payment
+
+<h2>Quét mã QR để thanh toán</h2>
+
+<div class="text-center my-4">
+    <img src="data:image/png;base64,@ViewBag.QrBase64"
+         style="width:300px;height:300px;border:1px solid #ddd;padding:10px;" />
+</div>
+
+<p><strong>Mã đơn hàng:</strong> @Model.OrderId</p>
+<p><strong>Số tiền:</strong> @Model.Amount.ToString("N0") đ</p>
+
+<hr />
+
+<h4>Tải lên ảnh xác nhận chuyển khoản</h4>
+
+<form asp-action="UploadProof" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="paymentId" value="@Model.Id" />
+
+    <div class="mb-3">
+        <input class="form-control" type="file" name="proof" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Gửi xác nhận</button>
+</form>

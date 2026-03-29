@@ -1,0 +1,150 @@
+﻿<!-- Views/Category/Details.cshtml -->
+@model IEnumerable<Web_BHGD.Models.Product>
+@{
+    ViewData["Title"] = ViewBag.Category?.Name ?? "Danh Mục Sản Phẩm";
+}
+
+<div class="container my-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Category" asp-action="Index">Danh mục</a></li>
+            <li class="breadcrumb-item active">@(ViewBag.Category?.Name ?? "Tất cả danh mục")</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <h2 class="mb-4">@(ViewBag.Category?.Name ?? "Tất cả danh mục")</h2>
+
+    <!-- Sidebar and Products -->
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="sticky-top" style="top: 20px;">
+                <partial name="_CategoryMenu" model="ViewBag.Categories" />
+            </div>
+        </div>
+        <!-- Products -->
+        <div class="col-lg-9">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-warning text-center">
+                    Không có sản phẩm nào trong danh mục này.
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="product-card bg-white shadow-sm rounded">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                    <div class="position-relative">
+                                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "/images/no-image.jpg" : product.ImageUrl)"
+                                             class="card-img-top rounded-top" alt="@product.Name"
+                                             style="height: 200px; object-fit: cover;" />
+                                        @if (product.Price < 500000)
+                                        {
+                                            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Giá Sốc</span>
+                                        }
+                                    </div>
+                                </a>
+                                <div class="p-3">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="text-dark">
+                                        <h6 class="text-truncate fw-bold">@product.Name</h6>
+                                    </a>
+                                    <div class="mb-2">
+                                        <span class="text-danger fw-bold">@product.Price.ToString("#,##0")₫</span>
+                                        @if (product.Price > 200000)
+                                        {
+                                            <small class="text-muted text-decoration-line-through ms-2">
+                                                @((product.Price * 1.2m).ToString("#,##0"))₫
+                                            </small>
+                                        }
+                                    </div>
+                                    <div class="mb-2">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <i class="bi bi-star-fill text-warning" style="font-size: 12px;"></i>
+                                        }
+                                        <small class="text-muted ms-1">(1k+)</small>
+                                    </div>
+                                    <button type="button" class="btn btn-danger btn-sm w-100 add-to-cart-btn"
+                                            data-product-id="@product.Id" data-product-name="@product.Name">
+                                        <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Details" asp-route-id="@ViewBag.CurrentCategoryId" asp-route-page="@i" asp-route-sortOrder="@ViewBag.CurrentSort">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            updateCartCount();
+            $('.add-to-cart-btn').click(function () {
+                var btn = $(this);
+                var productId = btn.data('product-id');
+                var productName = btn.data('product-name');
+                var quantity = 1;
+                btn.prop('disabled', true).html('<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Đang thêm...');
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "ShoppingCart")',
+                    type: 'POST',
+                    data: {
+                        productId: productId,
+                        quantity: quantity,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        showToast('success', `Đã thêm ${productName} vào giỏ hàng.`);
+                        updateCartCount();
+                        btn.prop('disabled', false).html('<i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ');
+                    },
+                    error: function () {
+                        showToast('error', 'Lỗi khi thêm sản phẩm vào giỏ hàng.');
+                        btn.prop('disabled', false).html('<i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ');
+                    }
+                });
+            });
+        });
+
+        function showToast(type, message) {
+            var toastClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            var icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+            var toast = `<div class="alert ${toastClass} alert-dismissible fade show position-fixed"
+                                            style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;" role="alert">
+                                            <i class="bi ${icon} me-2"></i>${message}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                         </div>`;
+            $('body').append(toast);
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 3000);
+        }
+
+        function updateCartCount() {
+            $.get('@Url.Action("GetCartItemCount", "ShoppingCart")', function (data) {
+                $('.cart-count').text(data.count);
+            });
+        }
+    </script>
+}

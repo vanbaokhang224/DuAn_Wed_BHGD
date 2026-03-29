@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Web_BHGD.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý Người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="card-title">@ViewData["Title"]</h2>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success mb-0 px-3 py-2">
+                @TempData["Message"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mb-0 px-3 py-2">
+                @TempData["Error"]
+            </div>
+        }
+    </div>
+
+    <div class="card-body">
+        <div class="table-container">
+            <table class="table table-striped table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Tuổi</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.FullName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@(string.IsNullOrEmpty(user.Address) ? "Chưa cập nhật" : user.Address)</td>
+                                <td>@(user.Age.HasValue ? user.Age.Value.ToString() : "Chưa cập nhật")</td>
+                                <td>@string.Join(", ", user.Roles)</td>
+                                <td>
+                                    <span class="badge @(!user.IsLocked ? "bg-success" : "bg-danger")">
+                                        @(!user.IsLocked ? "Hoạt động" : "Bị khóa")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        <!-- Nút xem chi tiết -->
+                                        <a asp-action="Details"
+                                           asp-route-id="@user.Id"
+                                           class="btn btn-info btn-sm"
+                                           title="Xem chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <!-- Nút chỉnh vai trò -->
+                                        <a asp-action="EditRole"
+                                           asp-route-id="@user.Id"
+                                           class="btn btn-warning btn-sm"
+                                           title="Chỉnh vai trò">
+                                            <i class="fas fa-user-shield"></i> Vai trò
+                                        </a>
+
+                                        <!-- Nút khóa / mở khóa -->
+                                        <form asp-action="@(user.IsLocked ? "Unlock" : "Lock")"
+                                              method="post"
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@user.Id" />
+                                            <button type="submit"
+                                                    class="btn btn-sm @(user.IsLocked ? "btn-success" : "btn-danger")"
+                                                    title="@(user.IsLocked ? "Mở khóa" : "Khóa")"
+                                                    onclick="return confirm('Bạn có chắc chắn muốn @(user.IsLocked ? "mở khóa" : "khóa") tài khoản này?');">
+                                                <i class="@(user.IsLocked ? "fas fa-lock-open" : "fas fa-lock")"></i>
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center py-5">
+                                <i class="fas fa-users-slash fs-1 text-muted mb-3"></i>
+                                <h5 class="text-muted">Không có người dùng nào</h5>
+                                <p class="text-muted">Hãy thêm người dùng mới</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

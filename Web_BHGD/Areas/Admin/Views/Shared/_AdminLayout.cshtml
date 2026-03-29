@@ -1,0 +1,225 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Web_BHGD.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div class="d-flex align-items-center">
+                <div class="logo-icon me-3">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <h4 class="text-white mb-0 logo-text">Admin Panel</h4>
+                    <small class="text-white-50 logo-text">Quản lý hệ thống</small>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a class="nav-link text-white-50" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+
+            <h6 class="text-white-50 text-uppercase small mt-4 mb-2 menu-text">Quản lý</h6>
+
+            <a class="nav-link text-white-50" asp-controller="Product" asp-action="Index">
+                <i class="fas fa-box"></i>
+                <span class="menu-text">Sản phẩm</span>
+            </a>
+
+            <a class="nav-link text-white-50" asp-controller="Categories" asp-action="Index">
+                <i class="fas fa-tags"></i>
+                <span class="menu-text">Danh mục</span>
+            </a>
+
+            <a class="nav-link text-white-50" asp-controller="Order" asp-action="Index">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="menu-text">Đơn hàng</span>
+            </a>
+
+            <a class="nav-link text-white-50" asp-controller="User" asp-action="Index">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">Người dùng</span>
+            </a>
+
+            <!-- ⭐ THÊM MENU HỖ TRỢ KHÁCH HÀNG -->
+            <a class="nav-link text-white-50" asp-controller="Support" asp-action="Index">
+                <i class="fas fa-headset"></i>
+                <span class="menu-text">Hỗ trợ khách hàng</span>
+            </a>
+
+            <h6 class="text-white-50 text-uppercase small mt-4 mb-2 menu-text">Hệ thống</h6>
+
+            <a class="nav-link text-white-50" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-store"></i>
+                <span class="menu-text">Về trang bán hàng</span>
+            </a>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="dropdown">
+                    <a class="nav-link text-white-50 dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                        <span class="menu-text">@User.Identity?.Name</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="/Identity/Account/Manage">
+                                <i class="fas fa-user-edit me-2"></i> Thông tin cá nhân
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post" class="d-inline w-100">
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <a class="nav-link text-white-50" asp-area="Identity" asp-page="/Account/Login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span class="menu-text">Đăng nhập</span>
+                </a>
+            }
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <div class="app-header">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small">
+                        <i class="fas fa-clock me-1"></i>
+                        @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                    </span>
+                </div>
+            }
+        </div>
+
+        @RenderBody()
+    </div>
+
+    <!-- Mobile Sidebar Offcanvas -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarOffcanvas">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title">
+                <i class="fas fa-shield-alt me-2"></i>
+                Admin Panel
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <nav class="sidebar-menu">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <h6 class="text-muted text-uppercase small mt-4 mb-2 px-3">Quản lý</h6>
+
+                <a class="nav-link" asp-controller="Product" asp-action="Index">
+                    <i class="fas fa-box"></i>
+                    <span>Sản phẩm</span>
+                </a>
+
+                <a class="nav-link" asp-controller="Categories" asp-action="Index">
+                    <i class="fas fa-tags"></i>
+                    <span>Danh mục</span>
+                </a>
+
+                <a class="nav-link" asp-controller="Order" asp-action="Index">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Đơn hàng</span>
+                </a>
+
+                <a class="nav-link" asp-controller="User" asp-action="Index">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Notification System -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle me-2"></i> @TempData["Success"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-exclamation-circle me-2"></i> @TempData["Error"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <script>
+        // Auto dismiss toasts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            var toasts = document.querySelectorAll('.toast');
+            toasts.forEach(function (toast) {
+                setTimeout(function () {
+                    var bsToast = new bootstrap.Toast(toast);
+                    bsToast.hide();
+                }, 5000);
+            });
+        });
+
+        // Active menu highlighting
+        document.addEventListener('DOMContentLoaded', function () {
+            var currentPath = window.location.pathname;
+            var menuLinks = document.querySelectorAll('.sidebar-menu .nav-link');
+
+            menuLinks.forEach(function (link) {
+                if (link.getAttribute('href') === currentPath ||
+                    (link.href && link.href.includes(currentPath))) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

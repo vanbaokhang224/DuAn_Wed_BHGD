@@ -1,0 +1,203 @@
+﻿@using Web_BHGD.Models
+@model ShoppingCart
+
+@{
+    ViewData["Title"] = "Giỏ hàng - BHGD Store";
+}
+
+<!-- Chèn token cho toàn bộ AJAX -->
+<form id="cartTokenForm">
+    @Html.AntiForgeryToken()
+</form>
+
+<!-- Breadcrumb -->
+<section class="bg-light py-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-primary">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- Nội dung chính -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4">Giỏ hàng của bạn</h2>
+
+        @if (Model?.Items == null || !Model.Items.Any())
+        {
+            <div class="alert alert-info text-center">
+                Giỏ hàng của bạn đang trống. <a asp-controller="Product" asp-action="Index" class="alert-link">Tiếp tục mua sắm</a>.
+            </div>
+        }
+        else
+        {
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">
+                                                    <img src="@item.ImageUrl"
+                                                         alt="@item.Name" class="rounded" style="width: 80px; height: 80px; object-fit: cover;" />
+                                                </a>
+
+                                                <div class="ms-3">
+                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId" class="text-dark">
+                                                        <h6 class="mb-1 text-truncate" style="max-width: 200px;">@item.Name</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-primary fw-bold">@item.Price.ToString("#,##0")₫</td>
+
+                                        <td>
+                                            <div class="input-group input-group-sm w-50">
+                                                <button class="btn btn-outline-secondary decrease-quantity" type="button" data-product-id="@item.ProductId">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input type="number" class="form-control quantity-input"
+                                                       value="@item.Quantity" min="1" max="99" data-product-id="@item.ProductId" />
+                                                <button class="btn btn-outline-secondary increase-quantity" type="button" data-product-id="@item.ProductId">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+
+                                        <td class="item-total text-primary fw-bold">@((item.Price * item.Quantity).ToString("#,##0"))₫</td>
+
+                                        <td>
+                                            <button class="btn btn-outline-primary btn-sm remove-item" data-product-id="@item.ProductId">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
+                                    <td class="fw-bold text-primary total-price">
+                                        @Model.Items.Sum(i => i.Price * i.Quantity).ToString("#,##0")₫
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <button class="btn btn-outline-primary clear-cart">
+                            <i class="bi bi-trash me-1"></i> Xóa toàn bộ
+                        </button>
+
+                        <a asp-action="Checkout" class="btn btn-primary">
+                            <i class="bi bi-cart-check me-1"></i> Thanh toán
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            const token = $('input[name="__RequestVerificationToken"]').val();
+
+            // Tăng số lượng
+            $('.increase-quantity').click(function () {
+                let input = $(this).closest('.input-group').find('.quantity-input');
+                let newQty = parseInt(input.val()) + 1;
+                if (newQty <= 99) updateQuantity($(this).data('product-id'), newQty, input);
+            });
+
+            // Giảm số lượng
+            $('.decrease-quantity').click(function () {
+                let input = $(this).closest('.input-group').find('.quantity-input');
+                let newQty = parseInt(input.val()) - 1;
+                if (newQty >= 1) updateQuantity($(this).data('product-id'), newQty, input);
+            });
+
+            // Nhập trực tiếp
+            $('.quantity-input').change(function () {
+                let qty = parseInt($(this).val());
+                if (qty >= 1 && qty <= 99)
+                    updateQuantity($(this).data('product-id'), qty, $(this));
+                else $(this).val(1);
+            });
+
+            // Xóa item
+            $('.remove-item').click(function () {
+                let row = $(this).closest("tr");
+                let productId = $(this).data("product-id");
+
+                $.post('@Url.Action("RemoveFromCart", "ShoppingCart")',
+                    {
+                        productId: productId,
+                        __RequestVerificationToken: token
+                    },
+                    function (response) {
+                        if (response.success) {
+                            row.remove();
+                            updateTotalPrice(response.totalPrice);
+                            if ($("tbody tr").length === 0) location.reload();
+                        }
+                    });
+            });
+
+            // Xóa toàn bộ
+            $('.clear-cart').click(function () {
+                $.post('@Url.Action("ClearCart", "ShoppingCart")',
+                    { __RequestVerificationToken: token },
+                    function (response) {
+                        if (response.success) location.reload();
+                    });
+            });
+
+            // Update số lượng AJAX
+            function updateQuantity(productId, quantity, input) {
+                $.post('@Url.Action("UpdateQuantity", "ShoppingCart")',
+                    {
+                        productId: productId,
+                        quantity: quantity,
+                        __RequestVerificationToken: token
+                    },
+                    function (response) {
+                        if (response.success) {
+                            input.val(quantity);
+                            input.closest('tr').find('.item-total').text(response.itemTotal + '₫');
+                            updateTotalPrice(response.totalPrice);
+                        }
+                    });
+            }
+
+            function updateTotalPrice(total) {
+                $('.total-price').text(total + '₫');
+            }
+        });
+    </script>
+}

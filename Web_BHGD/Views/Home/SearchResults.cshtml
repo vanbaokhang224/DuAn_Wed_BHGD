@@ -1,0 +1,91 @@
+﻿<!-- Views/Home/SearchResults.cshtml -->
+@model IEnumerable<Web_BHGD.Models.Product>
+@{
+    ViewData["Title"] = "Kết Quả Tìm Kiếm - BHGD Store";
+}
+
+<!-- Breadcrumb -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Tìm kiếm</li>
+            </ol>
+        </nav>
+        <h2 class="fw-bold">Kết Quả Tìm Kiếm</h2>
+        <p class="text-muted">
+            Tìm thấy <strong>@(Model?.Count() ?? 0)</strong> sản phẩm cho từ khóa: <strong>@ViewBag.SearchTerm</strong>
+        </p>
+    </div>
+</section>
+
+<!-- Search Results -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top" style="top: 20px;">
+                    <partial name="_CategoryMenu" />
+                </div>
+            </div>
+            <!-- Results -->
+            <div class="col-lg-9">
+                @if (!Model.Any())
+                {
+                    <div class="alert alert-warning text-center">
+                        Không tìm thấy sản phẩm nào cho từ khóa "<strong>@ViewBag.SearchTerm</strong>".
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="product-card bg-white shadow-sm rounded">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="position-relative">
+                                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/no-image.jpg" : item.ImageUrl)"
+                                                 class="card-img-top rounded-top" alt="@item.Name" style="height: 200px; object-fit: cover;" />
+                                            @if (item.Price < 500000)
+                                            {
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">Giá Sốc</span>
+                                            }
+                                        </div>
+                                    </a>
+                                    <div class="p-3">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="text-dark">
+                                            <h6 class="text-truncate fw-bold">@item.Name</h6>
+                                        </a>
+                                        <div class="mb-2">
+                                            <span class="text-danger fw-bold">@item.Price.ToString("#,##0")₫</span>
+                                            @if (item.Price > 200000)
+                                            {
+                                                <small class="text-muted text-decoration-line-through ms-2">
+                                                    @((item.Price * 1.2m).ToString("#,##0"))₫
+                                                </small>
+                                            }
+                                        </div>
+                                        <div class="mb-2">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning" style="font-size: 12px;"></i>
+                                            }
+                                            <small class="text-muted ms-1">(1k+)</small>
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-sm w-100 add-to-cart-btn"
+                                                data-product-id="@item.Id" data-product-name="@item.Name">
+                                            <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

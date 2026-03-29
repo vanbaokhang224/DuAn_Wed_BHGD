@@ -1,0 +1,290 @@
+﻿@model IEnumerable<Order>
+@using System.Linq
+@{
+    ViewData["Title"] = "Quản lý Đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var orders = Model?.ToList() ?? new List<Order>();
+    var customers = ViewBag.Customers as IEnumerable<ApplicationUser> ?? new List<ApplicationUser>();
+}
+
+<!-- Stats Section -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(67, 97, 238, 0.1); color: var(--primary);">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="stat-value">@orders.Count</div>
+        <div class="stat-label">Tổng đơn hàng</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(255, 193, 7, 0.1); color: #d39e00;">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-value">@orders.Count(o => o.Status == "Chờ xác nhận")</div>
+        <div class="stat-label">Chờ xác nhận</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(40, 167, 69, 0.1); color: var(--success);">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-value">@orders.Count(o => o.Status == "Đã giao hàng")</div>
+        <div class="stat-label">Đã giao hàng</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(220, 53, 69, 0.1); color: var(--danger);">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-value">@orders.Count(o => o.Status == "Huỷ")</div>
+        <div class="stat-label">Đã hủy</div>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">Danh sách đơn hàng</h2>
+        <div class="d-flex gap-2 align-items-center">
+            <div class="search-box">
+                <div style="position: relative;">
+                    <input type="text" class="form-control" placeholder="Tìm theo mã đơn, tên KH..." id="searchInput" style="padding-left: 40px; width: 300px;">
+                    <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray);"></i>
+                </div>
+            </div>
+            <select class="form-select" id="statusFilter" style="width: 200px;">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Chờ xác nhận">Chờ xác nhận</option>
+                <option value="Đã xác nhận">Đã xác nhận</option>
+                <option value="Đang giao hàng">Đang giao hàng</option>
+                <option value="Đã giao hàng">Đã giao hàng</option>
+                <option value="Huỷ">Đã hủy</option>
+            </select>
+            <select class="form-select" id="paymentFilter" style="width: 200px;">
+                <option value="">Tất cả PT thanh toán</option>
+                <option value="COD">COD</option>
+                <option value="Bank">Bank</option>
+                <option value="Momo">Momo</option>
+            </select>
+            <div class="input-group" style="width: 300px;">
+                <input type="date" class="form-control" id="dateFrom">
+                <span class="input-group-text">đến</span>
+                <input type="date" class="form-control" id="dateTo">
+            </div>
+            <button class="btn btn-primary" id="resetFilters">
+                <i class="fas fa-sync-alt"></i> Xóa lọc
+            </button>
+        </div>
+    </div>
+
+    <!-- Order Table -->
+    <div class="card-body">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Số lượng SP</th>
+                        <th>Tổng tiền</th>
+                        <th>PT thanh toán</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    @foreach (var order in orders)
+                    {
+                        <tr class="order-row"
+                            data-id="@order.Id"
+                            data-status="@order.Status"
+                            data-payment="@order.PaymentMethod"
+                            data-date="@order.OrderDate.ToString("yyyy-MM-dd")">
+                            <td>#@order.Id</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                        @order.CustomerName?[0]
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">@order.CustomerName</div>
+                                        <div class="text-muted small">@order.CustomerPhone</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@(order.OrderDetails?.Count ?? 0)</td>
+                            <td class="fw-bold text-primary">
+                                @(order.OrderDetails != null ? order.OrderDetails.Sum(od => od.Price * od.Quantity).ToString("n0") : "0")đ
+                            </td>
+                            <td>
+                                <span class="stock-badge">@order.PaymentMethod</span>
+                            </td>
+                            <td>
+                                <span class="stock-badge @GetStatusClass(order.Status)">
+                                    @order.Status
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <div class="action-container d-flex justify-content-between" style="min-width: 200px;">
+                                        <a asp-action="Details" asp-route-id="@order.Id" class="btn-icon btn-view" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        @if (order.Status == "Chờ xác nhận")
+                                        {
+                                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@order.Id" />
+                                                <input type="hidden" name="status" value="Đã xác nhận" />
+                                                <button type="submit" class="btn-icon btn-success" title="Xác nhận đơn">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (order.Status == "Đã xác nhận")
+                                        {
+                                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@order.Id" />
+                                                <input type="hidden" name="status" value="Đang giao hàng" />
+                                                <button type="submit" class="btn-icon btn-info" title="Giao hàng">
+                                                    <i class="fas fa-truck"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (order.Status == "Đang giao hàng")
+                                        {
+                                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@order.Id" />
+                                                <input type="hidden" name="status" value="Đã giao hàng" />
+                                                <button type="submit" class="btn-icon btn-success" title="Hoàn thành">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (order.Status != "Huỷ" && order.Status != "Đã giao hàng")
+                                        {
+                                            <form asp-action="ConfirmCancel" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@order.Id" />
+                                                <button type="submit" class="btn-icon btn-delete" title="Hủy đơn"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        <a asp-action="GenerateInvoice" asp-route-id="@order.Id" target="_blank" class="btn-icon btn-outline" title="Hóa đơn">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!orders.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-box-open fs-1 text-muted mb-3"></i>
+                                    <h5 class="text-muted">Không tìm thấy đơn hàng nào</h5>
+                                    <p class="text-muted">Hãy thử thay đổi bộ lọc hoặc tạo đơn hàng mới</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Filter orders
+            function filterOrders() {
+                const searchTerm = $('#searchInput').val().toLowerCase();
+                const status = $('#statusFilter').val();
+                const payment = $('#paymentFilter').val();
+                const dateFrom = $('#dateFrom').val();
+                const dateTo = $('#dateTo').val();
+
+                let visibleCount = 0;
+
+                $('.order-row').each(function () {
+                    const $row = $(this);
+                    const rowStatus = $row.data('status');
+                    const rowPayment = $row.data('payment');
+                    const rowDate = $row.data('date');
+                    const rowText = $row.text().toLowerCase();
+
+                    const matchesSearch = searchTerm === '' || rowText.includes(searchTerm);
+                    const matchesStatus = status === '' || rowStatus === status;
+                    const matchesPayment = payment === '' || rowPayment === payment;
+                    const matchesDate = (dateFrom === '' || rowDate >= dateFrom) &&
+                        (dateTo === '' || rowDate <= dateTo);
+
+                    if (matchesSearch && matchesStatus && matchesPayment && matchesDate) {
+                        $row.show();
+                        visibleCount++;
+                    } else {
+                        $row.hide();
+                    }
+                });
+
+                // Update showing count
+                $('#showingCount').text(visibleCount);
+
+                // Show empty message if no results
+                if (visibleCount === 0) {
+                    $('#orderTableBody').append(`
+                                <tr id="empty-row">
+                                    <td colspan="8" class="text-center py-5">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <i class="fas fa-search fs-1 text-muted mb-3"></i>
+                                            <h5 class="text-muted">Không tìm thấy đơn hàng phù hợp</h5>
+                                            <p class="text-muted">Hãy thử điều chỉnh bộ lọc của bạn</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                } else {
+                    $('#empty-row').remove();
+                }
+            }
+
+            // Reset filters
+            $('#resetFilters').click(function () {
+                $('#searchInput').val('');
+                $('#statusFilter').val('');
+                $('#paymentFilter').val('');
+                $('#dateFrom').val('');
+                $('#dateTo').val('');
+                filterOrders();
+            });
+
+            // Initialize filters
+            $('#searchInput, #statusFilter, #paymentFilter, #dateFrom, #dateTo').on('change keyup', filterOrders);
+
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const lastWeek = new Date();
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            $('#dateFrom').val(lastWeek.toISOString().split('T')[0]);
+            $('#dateTo').val(today);
+        });
+    </script>
+}
+
+@functions {
+    string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Chờ xác nhận" => "stock-critical",
+            "Đã xác nhận" => "stock-normal",
+            "Đang giao hàng" => "stock-high",
+            "Đã giao hàng" => "stock-success",
+            "Huỷ" => "stock-out",
+            _ => "stock-normal"
+        };
+    }
+}

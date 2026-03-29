@@ -1,0 +1,199 @@
+﻿@model int
+@using Web_BHGD.Models
+@using Microsoft.EntityFrameworkCore
+@inject Web_BHGD.Models.ApplicationDbContext DbContext
+
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    var orderId = Model;
+    var order = await DbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+    var status = order?.Status ?? "Chờ xác nhận";
+}
+
+<!-- Order Success Hero Section -->
+<section class="order-success-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="success-card">
+                    <!-- Success Icon -->
+                    <div class="success-icon-container">
+                        <div class="success-icon">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <div class="success-pulse"></div>
+                    </div>
+
+                    <!-- Success Content -->
+                    <div class="success-content">
+                        <h1 class="success-title">Đặt hàng thành công!</h1>
+                        <p class="success-subtitle">
+                            Cảm ơn bạn đã tin tưởng và đặt hàng tại cửa hàng chúng tôi
+                        </p>
+
+                        <!-- Order Info -->
+                        <div class="order-info-card">
+                            <div class="order-id-section">
+                                <span class="order-label">Mã đơn hàng</span>
+                                <span class="order-number">#@orderId</span>
+                                <button class="copy-order-btn" onclick="copyOrderId('@orderId')">
+                                    <i class="bi bi-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Status Message -->
+                        <div class="status-message">
+                            @if (status == "Đã xác nhận")
+                            {
+                                <div class="status-item">
+                                    <i class="bi bi-check-circle status-icon"></i>
+                                    <div class="status-text">
+                                        <h6>Đã xác nhận</h6>
+                                        <p>Đơn hàng của bạn đã được xác nhận và sẽ sớm được chuẩn bị để giao. Chúng tôi sẽ liên hệ với bạn qua email hoặc số điện thoại.</p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="status-item">
+                                    <i class="bi bi-clock-history status-icon"></i>
+                                    <div class="status-text">
+                                        <h6>Chờ xác nhận</h6>
+                                        <p>Đơn hàng của bạn đang chờ xác nhận từ quản trị viên. Vui lòng kiểm tra email hoặc số điện thoại để cập nhật trạng thái.</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Action Buttons Section -->
+<section class="action-buttons-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="action-buttons">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-primary btn-lg action-btn">
+                        <i class="bi bi-house-door me-2"></i>
+                        Tiếp tục mua sắm
+                    </a>
+                    <a href="/Identity/Account/Manage/OrderHistory" class="btn btn-outline-primary btn-lg action-btn">
+                        <i class="bi bi-list-check me-2"></i>
+                        Theo dõi đơn hàng
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Next Steps Section -->
+<section class="next-steps-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h4 class="section-title">Bước tiếp theo</h4>
+                <div class="row g-4">
+                    <!-- Check Email -->
+                    <div class="col-md-4">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="bi bi-envelope-check"></i>
+                            </div>
+                            <h6>Kiểm tra email</h6>
+                            <p>Chúng tôi đã gửi email xác nhận đơn hàng đến hộp thư của bạn</p>
+                        </div>
+                    </div>
+
+                    <!-- Track Order -->
+                    <div class="col-md-4">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <h6>Theo dõi đơn hàng</h6>
+                            <p>Sử dụng mã đơn hàng để theo dõi tình trạng giao hàng</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Support -->
+                    <div class="col-md-4">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="bi bi-headset"></i>
+                            </div>
+                            <h6>Hỗ trợ khách hàng</h6>
+                            <p>Liên hệ với chúng tôi nếu có bất kỳ thắc mắc nào</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info Section -->
+<section class="contact-info-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="contact-info-card">
+                    <h5>Cần hỗ trợ?</h5>
+                    <p>Đội ngũ hỗ trợ khách hàng của chúng tôi luôn sẵn sàng giúp bạn</p>
+                    <div class="contact-methods">
+                        <div class="contact-item">
+                            <i class="bi bi-telephone"></i>
+                            <span>0123 456 789</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-envelope"></i>
+                            <span>support@example.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-clock"></i>
+                            <span>8:00 - 22:00 (Thứ 2 - Chủ nhật)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        // Show success toast if cần
+        console.log('Order completed successfully');
+    </script>
+}
+
+<script>
+    function copyOrderId(orderId) {
+        navigator.clipboard.writeText(orderId).then(function () {
+            showCopyToast('Đã sao chép mã đơn hàng: ' + orderId);
+        }).catch(function () {
+            // Fallback cho older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = orderId;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showCopyToast('Đã sao chép mã đơn hàng: ' + orderId);
+        });
+    }
+
+    function showCopyToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'copy-toast';
+        toast.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+</script>

@@ -1,0 +1,63 @@
+﻿@model Web_BHGD.Models.Order
+@{
+    ViewData["Title"] = $"Hủy đơn hàng #{Model.Id}";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Breadcrumb -->
+<div class="content-card mb-4">
+    <div class="card-body">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" asp-area="Admin">Trang chủ</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index">Quản lý đơn hàng</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Hủy đơn hàng #@Model.Id</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">Xác nhận hủy đơn hàng</h2>
+    </div>
+    <div class="card-body text-center">
+        <h3 class="fw-bold text-danger mb-3"><i class="fas fa-exclamation-triangle"></i> Xác nhận hủy đơn hàng</h3>
+        <p class="mb-4">
+            Bạn có chắc chắn muốn <strong>hủy</strong> đơn hàng <strong>#@Model.Id</strong> không? <br />
+            Hành động này <span class="text-danger fw-bold">không thể hoàn tác</span>.
+        </p>
+
+        <ul class="list-group text-start mb-4">
+            <li class="list-group-item"><strong>Khách hàng:</strong> @(Model.ApplicationUser?.UserName ?? Model.CustomerName)</li>
+            <li class="list-group-item">
+                <strong>Phương thức thanh toán:</strong>
+                <span class="stock-badge">
+                    @(Model.PaymentMethod switch
+                    {
+                        "COD" => "Thanh toán khi nhận hàng",
+                        "Bank" => "Ngân hàng",
+                        "MoMo" => "MoMo",
+                        _ => Model.PaymentMethod
+                    })
+                </span>
+            </li>
+            <li class="list-group-item"><strong>Tổng tiền:</strong> @Model.TotalPrice.ToString("#,##0")₫</li>
+        </ul>
+
+        <form asp-action="ConfirmCancel" method="post" class="d-flex justify-content-center gap-2">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-delete">
+                <i class="fas fa-times"></i> Xác nhận hủy
+            </button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Liên Hệ - BHGD Store";
+}
+
+<!-- Page Header -->
+<section class="page-header py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col">
+                <h1 class="fw-bold mb-0">Liên Hệ</h1>
+                <p class="text-muted">Hãy liên hệ với chúng tôi để được hỗ trợ nhanh chóng!</p>
+            </div>
+            <div class="col-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Content -->
+<section class="contact-section py-5 bg-white">
+    <div class="container">
+        <div class="row">
+            <!-- Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <h2 class="fw-bold mb-3"><i class="bi bi-envelope-fill text-primary me-2"></i>Thông Tin Liên Hệ</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>123 Đường ABC, Quận 1, TP.HCM</li>
+                            <li class="mb-3"><i class="bi bi-telephone-fill text-primary me-2"></i>1900-1000</li>
+                            <li class="mb-3"><i class="bi bi-envelope-fill text-primary me-2"></i>info@bhgdstore.com</li>
+                            <li><i class="bi bi-clock-fill text-primary me-2"></i>8:00 - 22:00 (Thứ 2 - CN)</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <h2 class="fw-bold mb-3"><i class="bi bi-chat-dots-fill text-primary me-2"></i>Gửi Tin Nhắn</h2>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" placeholder="Nhập họ và tên...">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" placeholder="Nhập email...">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tin nhắn</label>
+                                <textarea class="form-control" rows="5" placeholder="Nhập tin nhắn của bạn..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gửi Ngay</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

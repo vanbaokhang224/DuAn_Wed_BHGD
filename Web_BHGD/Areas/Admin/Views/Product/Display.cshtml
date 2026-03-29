@@ -1,0 +1,126 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Chi tiết Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-card">
+    <div class="card-header">
+        <h2 class="card-title">@Model.Name</h2>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-center mb-4">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height:300px;">
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Thông tin cơ bản</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Mã SP:</dt>
+                            <dd class="col-sm-8">@Model.Id</dd>
+
+                            <dt class="col-sm-4">Danh mục:</dt>
+                            <dd class="col-sm-8">@Model.Category?.Name</dd>
+
+                            <dt class="col-sm-4">Giá bán:</dt>
+                            <dd class="col-sm-8">@Model.Price.ToString("N0")đ</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Tình trạng kho</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <div class="stat-value @ViewBag.StockStatusClass">
+                                    @Model.Stock
+                                </div>
+                                <div class="stat-label">Tồn kho</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-value text-success">
+                                    @Model.SoldQuantity
+                                </div>
+                                <div class="stat-label">Đã bán</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-value text-primary">
+                                    @ViewBag.SalesPercentage%
+                                </div>
+                                <div class="stat-label">Tỷ lệ bán</div>
+                            </div>
+                        </div>
+
+                        <div class="progress mt-4" style="height: 20px;">
+                            <div class="progress-bar bg-success"
+                                 style="width: @ViewBag.SalesPercentage%"
+                                 role="progressbar">
+                                Đã bán
+                            </div>
+                            <div class="progress-bar bg-warning"
+                                 style="width: @(100 - ViewBag.SalesPercentage)%"
+                                 role="progressbar">
+                                Tồn kho
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="badge @ViewBag.StockStatusClass">
+                                <i class="fas fa-box"></i> @ViewBag.StockStatus
+                            </span>
+                            <span class="badge @ViewBag.PerformanceStatus">
+                                <i class="fas fa-chart-line"></i> @ViewBag.PerformanceStatus
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Thông tin tài chính</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Giá trị tồn kho</h6>
+                                        <h4 class="text-primary">@ViewBag.StockValue.ToString("N0")đ</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Doanh thu</h6>
+                                        <h4 class="text-success">@ViewBag.Revenue.ToString("N0")đ</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <h5>Mô tả sản phẩm</h5>
+                            <p class="text-muted">@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
